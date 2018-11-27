@@ -1,2 +1,1 @@
-# binfo
-binfo dev repo
+BINFO
