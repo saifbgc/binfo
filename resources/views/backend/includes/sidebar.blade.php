@@ -43,6 +43,24 @@
                 </li>
             @endif
 
+            @if($logged_in_user->isAdmin())
+            <li class="divider"></li>
+
+            <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern('admin/settings*'), 'open') }}">
+                <a class="nav-link nav-dropdown-toggle {{ active_class(Active::checkUriPattern('admin/settings*')) }}" href="#">
+                    <i class="nav-icon icon-list"></i> @lang('menus.backend.settings.main')
+                </a>
+
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link {{ active_class(Active::checkUriPattern('admin/settings*')) }}" href="{{ route('admin.settings.dashboard') }}">
+                            @lang('menus.backend.settings.dashboard')
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            @endif
+
             <li class="divider"></li>
 
             <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern('admin/log-viewer*'), 'open') }}">

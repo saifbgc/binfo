@@ -49,6 +49,10 @@ return [
             'history'   => 'History',
             'system'    => 'System',
         ],
+        'settings' => [
+            'main' => 'Settings',
+            'dashboard' => 'Dashboard',
+        ]
     ],
 
     'language-picker' => [

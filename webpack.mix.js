@@ -14,8 +14,19 @@ const mix = require('laravel-mix');
 mix.setPublicPath('public');
 
 mix.sass('resources/sass/frontend/app.scss', 'css/frontend.css')
+    .sass('public/css/theme-style.scss', 'css/binfo.css')
     .sass('resources/sass/backend/app.scss', 'css/backend.css')
-    .js('resources/js/frontend/app.js', 'js/frontend.js')
+    .js([
+        'resources/js/frontend/app.js',
+        'public/js/jquery.appear.js',
+        'public/js/jquery-countTo.js',
+        'public/js/owl.carousel.min.js',
+        'public/js/jquery.fancybox.min.js',
+        'public/js/bootsnav.js',
+        'public/js/zelect.js',
+        'public/js/parallax.min.js',
+        'public/js/functions.js'
+    ], 'js/frontend.js')
     .js([
         'resources/js/backend/before.js',
         'resources/js/backend/app.js',
