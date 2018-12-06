@@ -13,6 +13,9 @@ use App\Models\Image;
 use App\Models\Division;
 use App\Models\District;
 
+
+
+use Validator;
 class ListingController extends Controller
 {
 	
@@ -58,8 +61,8 @@ class ListingController extends Controller
      */
     public function store(AddRequest $request)
     {
-      	
       
+	   
 	   $image_id = null;
 	   
 	   $listing = new Listing();
@@ -70,8 +73,9 @@ class ListingController extends Controller
 	   $listing->name = $request->name;
 	   $listing->category_id = $request->category_id;
 	   $listing->working_hour = $request->working_hour;
+	   $listing->founded_at = $request->founded_at;
 	   $listing->user_id = $request->user()->id;
-	   
+	   $listing->off_days = $request->off_days;
 	   
 	   if($request->hasFile('logo')){
 	   	
