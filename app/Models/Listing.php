@@ -7,7 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Listing extends Model
 {
     //
-    protected $fillable = ['name','working_hour','category_id','user_id','off_days','founded_at'];
+    protected $fillable = [
+    'name',
+    'working_hour',
+    'category_id',
+    'user_id',
+    'off_days',
+    'founded_at',
+    
+    
+    ];
 	
 	public function image()
     {

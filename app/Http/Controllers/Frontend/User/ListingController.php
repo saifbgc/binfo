@@ -71,11 +71,34 @@ class ListingController extends Controller
 	  
 	   
 	   $listing->name = $request->name;
+	   $listing->description = $request->description;
+	   
 	   $listing->category_id = $request->category_id;
 	   $listing->working_hour = $request->working_hour;
 	   $listing->founded_at = $request->founded_at;
 	   $listing->user_id = $request->user()->id;
 	   $listing->off_days = $request->off_days;
+	   
+	   $listing->division_id = $request->division_id;
+	   $listing->district_id = $request->district_id;
+	   
+	   $listing->address = $request->address;
+	   $listing->website = $request->website;
+	   $listing->phone = $request->phone;
+	   $listing->email = $request->email;
+	   $listing->registered_with = $request->registered_with;
+	   
+	   $listing->additional_information = $request->additional_information;
+	   
+	   
+	   
+	   $listing->facebook_url = $request->facebook_url;
+	   $listing->twitter_url = $request->twitter_url;
+	   $listing->linkedin_url = $request->linkedin_url;
+	   $listing->googleplus_url = $request->googleplus_url;
+	   $listing->youtube_url = $request->youtube_url;
+	   $listing->instagram_url = $request->instagram_url;
+	   
 	   
 	   if($request->hasFile('logo')){
 	   	
