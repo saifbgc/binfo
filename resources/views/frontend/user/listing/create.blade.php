@@ -159,7 +159,7 @@
 									 {!! Form::textarea ('address', null, ['placeholder' => 'Address','class'=>'form-control']) !!}
 									 </div>
 								</div>
-								
+								{{--
 								<div class="listing-title-area">
 									
 									<div class="form-group {{ $errors->has('working_hour') ? 'alert alert-danger' :'' }}">
@@ -167,6 +167,30 @@
             							{!! Form::text('working_hour', null, ['placeholder' => 'Ex: 10-12','class'=>'form-control']) !!}
 							        	{!! $errors->first('working_hour','<span class="help-block">:message</span>') !!}
 							        </div>
+									
+								</div>
+								--}}
+								<div class="listing-title-area">
+									
+									<div class="row">
+
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Opening from
+                                                </label>
+                                                {!! Form::text('opening_from', null, ['id'=>'opening_from','placeholder' => '10:00 AM','class'=>'']) !!}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Opening to
+                                                </label>
+                                                {!! Form::text('opening_to', null, ['id'=>'opening_to','placeholder' => '06:00 PM','class'=>'']) !!}
+                                            </div>
+                                        </div>
+
+                                    </div>
 									
 								</div>
 								
@@ -410,6 +434,13 @@ $('#off_days').on('tokenfield:createtoken', function (event) {
             event.preventDefault();
     });
 });
+
+$('#opening_from').timepicker({
+         format: 'hh:MM TT'
+     });
+$('#opening_to').timepicker({
+         format: 'hh:MM TT'
+     });
 	
 </script>
 

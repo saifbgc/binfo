@@ -17,6 +17,8 @@ class Listing extends Model
     
     
     ];
+	//protected $opening_from;
+	//protected $opening_to;
 	
 	public function image()
     {

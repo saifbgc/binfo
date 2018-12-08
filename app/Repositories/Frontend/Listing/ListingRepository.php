@@ -23,4 +23,8 @@ class ListingRepository extends BaseRepository
     }
 	
 	
+	public function FrameImage($imageFile, $fileName){
+		
+	}
+	
 }

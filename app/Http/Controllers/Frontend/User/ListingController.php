@@ -74,7 +74,9 @@ class ListingController extends Controller
 	   $listing->description = $request->description;
 	   
 	   $listing->category_id = $request->category_id;
-	   $listing->working_hour = $request->working_hour;
+	   //$listing->working_hour = $request->working_hour;
+	   $request->opening_to = !empty($request->opening_to)?",".$request->opening_to:"";
+	   $listing->working_hour = $request->opening_from.$request->opening_to;
 	   $listing->founded_at = $request->founded_at;
 	   $listing->user_id = $request->user()->id;
 	   $listing->off_days = $request->off_days;
