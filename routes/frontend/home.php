@@ -13,7 +13,9 @@ use App\Http\Controllers\Frontend\User\ListingController;
 Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('contact', [ContactController::class, 'index'])->name('contact');
 Route::post('contact/send', [ContactController::class, 'send'])->name('contact.send');
-
+//image showing
+Route::get('showframed', [ListingController::class, 'showImage'])->name('showframed');
+//end imageshowing by mostofa
 /*
  * These frontend controllers require the user to be logged in
  * All route names are prefixed with 'frontend.'

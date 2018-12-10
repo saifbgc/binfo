@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\frontend\user;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\Controller;
 
 use App\Repositories\Frontend\Listing\ListingRepository;
@@ -13,9 +14,11 @@ use App\Models\Image;
 use App\Models\Division;
 use App\Models\District;
 
-
-
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Validator;
+use PHPImageWorkshop\ImageWorkshop;
+
 class ListingController extends Controller
 {
 	
@@ -32,6 +35,56 @@ class ListingController extends Controller
         return route(home_route());
     }
 	
+	
+	public function showImage(){
+		//$savePath = Storage::disk('public')->path(null);	
+		//echo $savePath;
+		//die();
+		$frame = 'frame.jpg';
+		$image = 'trumpkiss.jpg';
+		///$path = 'public/' . $filename;
+		//echo storage_path('app/public/');
+		//die();
+		//$path = 'storage/uploads/rcN9cj8pgMaoPtPzcdUruxRZMs8SeYxwPRrzkjkW.png';
+		//$contents = Storage::disk('local')->get($path);
+		//echo $contents;
+		//die();
+		$framepath = Storage::disk('public')->path($frame);
+		$imagepath = Storage::disk('public')->path($image);
+		//echo $framepath;
+		//die();
+	    if ( !File::exists($framepath) && !File::exists($imagepath) ) {
+	        abort(404);
+	    }
+		
+		$imagefile = ImageWorkshop::initFromPath($imagepath);
+		$framefile = ImageWorkshop::initFromPath($framepath);
+		//die();
+		
+		$layerGroup = ImageWorkshop::initVirginLayer($framefile->getWidth() , $framefile->getHeight());
+		
+		$imagefile->resizeInPixel($framefile->getWidth()-40, $framefile->getHeight()-120);
+		
+		$layerGroup->addLayer(1, $framefile);
+		$layerGroup->addLayer(2, $imagefile, 20, 80, 'LT');
+		//$framefile = File::get($framepath);
+		//$imagefile = File::get($imagepath);
+		
+	    $type = File::mimeType($framepath);
+		//$extension = File::extension($framepath);
+		//var_dump($extension);
+		//die();
+		//$filename = $this->listingRepository->FrameImage($image);
+		$image = $layerGroup->getResult("ffffff");
+	    //$response = Response::make($image, 200);
+	    //$response->header("Content-Type", $type);
+	    
+		
+	    //return $response;
+	    header('Content-type: image/jpeg');
+	    imagejpeg($image, null, 95);
+		
+	}
 	
     public function index()
     {
@@ -105,8 +158,13 @@ class ListingController extends Controller
 	   if($request->hasFile('logo')){
 	   	
 		 $path = $request->logo->store('storage/uploads');
+		 $fileName  = $request->logo->getClientOriginalName();
+		 
+		 $filename = $this->listingRepository->FrameImage($path, $fileName);
+		 
 	   	 $image = new Image();
-		 $image->path = $path;
+		 //$image->path = $path;
+		 $image->path = $filename;
 		 $image->save();
 		 $image_id = $image->id;
 	   }
