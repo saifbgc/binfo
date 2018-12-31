@@ -10,7 +10,7 @@ use App\Repositories\Frontend\Listing\ListingRepository;
 use App\Http\Requests\Listing\AddRequest;
 use App\Models\Category;
 use App\Models\Listing;
-use App\Models\Image;
+//use App\Models\Image;
 use App\Models\Division;
 use App\Models\District;
 
@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Validator;
 use PHPImageWorkshop\ImageWorkshop;
+
+//use TextProcess;
 
 class ListingController extends Controller
 {
@@ -36,12 +38,15 @@ class ListingController extends Controller
     }
 	
 	
-	public function showImage(){
+	public function showImage($name){
+		/***	
 		//$savePath = Storage::disk('public')->path(null);	
 		//echo $savePath;
 		//die();
-		$frame = 'frame.jpg';
-		$image = 'trumpkiss.jpg';
+		*/
+		
+		$frame = 'frame.png';
+		$image = $name.'.jpg';
 		///$path = 'public/' . $filename;
 		//echo storage_path('app/public/');
 		//die();
@@ -60,13 +65,66 @@ class ListingController extends Controller
 		$imagefile = ImageWorkshop::initFromPath($imagepath);
 		$framefile = ImageWorkshop::initFromPath($framepath);
 		//die();
+		$frameW = $framefile->getWidth();
+		$frameH = $framefile->getHeight();
+		$layerGroup = ImageWorkshop::initVirginLayer( $frameW , $frameH);
 		
-		$layerGroup = ImageWorkshop::initVirginLayer($framefile->getWidth() , $framefile->getHeight());
+		$holderOX = $frameW * (10/100);
+		$holderOY = $frameH * (10/100);
+
+		$holderW = $frameW - $holderOX;
+		$holderH = $frameH - $holderOY;
+
+		$holderArea = ImageWorkshop::initVirginLayer( $holderW , $holderH);
+
+		$imageW = $imagefile->getWidth();
+		$imageH = $imagefile->getHeight();
 		
-		$imagefile->resizeInPixel($framefile->getWidth()-40, $framefile->getHeight()-120);
+		if($imageW > $holderW || $imageH > $holderH){
+
+			
 		
+			$ratio = ($imageW / $imageH) ;
+			
+
+			$imageW = $holderW *  $ratio;
+			$imageH = $holderH / $ratio;
+			
+			if($imageW > $holderW){
+				$imageWdiff = $imageW - $holderW;
+				$imageWdiffDiv = ($imageW / $imageWdiff);
+				$imageHdiff = ($imageH / $imageWdiffDiv)/2;
+				$imageW = $imageW - ($imageWdiff + $imageWdiff * .30);
+				$imageH = $imageH - ($imageHdiff - $imageHdiff * .95);
+			}
+
+			if($imageH > $holderH){
+				$imageHdiff = $imageH - $holderH;
+				$imageHdiffDiv = ($imageH / $imageHdiff);
+				$imageWdiff = ($imageW / $imageHdiffDiv)/2;
+				$imageH = $imageH - ($imageHdiff + $imageHdiff * .50);
+				$imageW = $imageW - ($imageWdiff + $imageWdiff * .99);
+			}
+				
+		
+		}
+
+		//holder middle
+
+		$holderMiddleX = $holderW/2;
+		$holderMiddleY = $holderH/2;
+		$imageMiddleX = $imageW/2;
+		$imageMiddleY = $imageH/2;
+
+		$imagePosX = $holderMiddleX - ($imageMiddleX+$imageMiddleX * .15);
+		//$imagePosY = $holderMiddleY - $imageMiddleY;
+
+		$imagefile->resizeInPixel($imageW, $imageH);
+		
+		$holderArea->addLayer(1, $imagefile,$imagePosX, null, 'LT' );
+
 		$layerGroup->addLayer(1, $framefile);
-		$layerGroup->addLayer(2, $imagefile, 20, 80, 'LT');
+		$layerGroup->addLayer(2, $holderArea, $holderOX, $holderOY, 'LT');
 		//$framefile = File::get($framepath);
 		//$imagefile = File::get($imagepath);
 		
@@ -84,6 +142,9 @@ class ListingController extends Controller
 	    header('Content-type: image/jpeg');
 	    imagejpeg($image, null, 95);
 		
+		//$this->listingRepository->NameImage("Golam Mostofa");
+		//return TextProcess::lineBreak('Golam Mostofa',5);
+		
 	}
 	
     public function index()
@@ -99,8 +160,9 @@ class ListingController extends Controller
      */
     public function create()
     {
-        //
-        //var_dump(auth()->user()->id);
+        
+		//var_dump(auth()->user()->id);
+		
         $category = Category::pluck('name','id');
 		$division = Division::pluck('name','id');
         return view('frontend.user.listing.create')->with(['categories'=> $category, 'division' => $division]);
@@ -161,13 +223,22 @@ class ListingController extends Controller
 		 $fileName  = $request->logo->getClientOriginalName();
 		 
 		 $filename = $this->listingRepository->FrameImage($path, $fileName);
-		 
+		 /*
 	   	 $image = new Image();
 		 //$image->path = $path;
 		 $image->path = $filename;
 		 $image->save();
-		 $image_id = $image->id;
+		 $image_id = $image->id;*/
+		 $image_id = $this->listingRepository->saveImage($fileName);
+		 
+	   }else{
+		$fileName  = date('Ymdhis');
+		
+		$fileName = $this->listingRepository->NameImage($listing->name, $fileName);
+
+		$image_id = $this->listingRepository->saveImage($fileName);
 	   }
+	  
 	   
 	   if($image_id != null){
 	   	 $listing->image_id = $image_id;

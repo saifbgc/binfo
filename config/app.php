@@ -185,7 +185,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\ObserverServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        /*
+        Custom by Mostofa
+        */
+        //App\Providers\TextprocessServiceProvider::class,
     ],
 
     /*
@@ -241,6 +244,11 @@ return [
         'Active' => HieuLe\Active\Facades\Active::class,
         'Gravatar' => Creativeorange\Gravatar\Facades\Gravatar::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+
+        /*
+        Custom by Mostofa
+        */
+        //'TextProcess' => App\Facades\General\TextProcess::class,
 
     ],
 
