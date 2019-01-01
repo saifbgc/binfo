@@ -149,8 +149,12 @@ class ListingController extends Controller
 	
     public function index()
     {
-        $listings=\App\Models\Listing::all();
-        return view('frontend.listing',compact('listings'));
+		$listings=Listing::where('user_id','=',auth()->user()->id)
+		->orderBy('id','desc')
+		->paginate(5);
+		//var_dump($listings);
+		
+        return view('frontend.user.listing.index',compact('listings'));
     }
 
     /**
@@ -162,6 +166,7 @@ class ListingController extends Controller
     {
         
 		//var_dump(auth()->user()->id);
+		
 		
         $category = Category::pluck('name','id');
 		$division = Division::pluck('name','id');
@@ -216,13 +221,14 @@ class ListingController extends Controller
 	   $listing->youtube_url = $request->youtube_url;
 	   $listing->instagram_url = $request->instagram_url;
 	   
+	   $fileName = Listing::max('id')+1;
 	   
 	   if($request->hasFile('logo')){
 	   	
 		 $path = $request->logo->store('storage/uploads');
-		 $fileName  = $request->logo->getClientOriginalName();
+		 //$fileName  = $request->logo->getClientOriginalName();
 		 
-		 $filename = $this->listingRepository->FrameImage($path, $fileName);
+		 $fileName = $this->listingRepository->FrameImage($path, $fileName);
 		 /*
 	   	 $image = new Image();
 		 //$image->path = $path;
@@ -232,7 +238,7 @@ class ListingController extends Controller
 		 $image_id = $this->listingRepository->saveImage($fileName);
 		 
 	   }else{
-		$fileName  = date('Ymdhis');
+		//$fileName  = date('Ymdhis');
 		
 		$fileName = $this->listingRepository->NameImage($listing->name, $fileName);
 
@@ -246,7 +252,7 @@ class ListingController extends Controller
 	   $listing->save();
 	   
        //$this->listingRepository->create($data);
-	   return redirect($this->redirectPath());
+	   return redirect('index');
     }
 
     /**
@@ -257,7 +263,8 @@ class ListingController extends Controller
      */
     public function show($id)
     {
-        //
+		$listing = Listing::find($id);
+        return view('frontend.user.listing.show',compact('listing'));
     }
 
     /**
