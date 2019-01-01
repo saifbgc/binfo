@@ -24,7 +24,8 @@ mix.sass('resources/sass/frontend/app.scss', 'css/frontend.css')
         'public/js/jquery.fancybox.min.js',
         'public/js/bootsnav.js',
         'public/js/zelect.js',
-        'public/js/parallax.min.js',
+        'public/js/dropzone.min.js',
+        'public/js/parallax.min.js',        
         'public/js/functions.js'
     ], 'js/frontend.js')
     .js([
