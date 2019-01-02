@@ -53,8 +53,15 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="top_right_links2">
                             <ul class="top_links">
-                                <li><a href="profile.html"><i class="fa fa-user-o" aria-hidden="true"></i> Profile</a> </li>
-                                <li><a href="login-registerd.html"><i class="fa fa-lock" aria-hidden="true"></i> Login / Register</a> </li>
+                                <li><a href="{{ url('account') }}"><i class="fa fa-user-o" aria-hidden="true"></i> Profile</a> </li>
+                                @guest
+                                <li><a href="{{ url('login') }}"><i class="fa fa-lock" aria-hidden="true"></i> Login</a> </li>
+                                <li><a href="{{ url('register') }}"><i class="fa fa-lock" aria-hidden="true"></i> Register</a> </li>
+                                @endguest
+                                
+                                @auth
+                                <li><a href="{{ url('logout') }}"><i class="fa fa-lock" aria-hidden="true"></i> Logout</a> </li>
+                                @endauth
                             </ul>
                             <div class="add-listing"> <a href="add-listing.html"><i class="fa fa-plus" aria-hidden="true"></i> Add Listing</a> </div>
                         </div>
@@ -72,7 +79,7 @@
                         <div class="navbar-header">
                             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu"> <i class="fa fa-bars"></i>
                             </button>
-                            <a class="navbar-brand sticky_logo" href="index.html"><img src="images/logo.png" class="logo" alt="">
+                            <a class="navbar-brand sticky_logo" href="{{url('')}}"><img src="images/logo.png" class="logo" alt="">
                             </a>
                         </div>
                         <!-- End Header Navigation -->
