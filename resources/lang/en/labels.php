@@ -120,6 +120,8 @@ return [
 
         'auth' => [
             'login_box_title'    => 'Login',
+            'Login_Now'       => 'Login Now',
+            'Register'       => 'Register',
             'login_button'       => 'Login',
             'login_with'         => 'Login with :social_media',
             'register_box_title' => 'Register',
