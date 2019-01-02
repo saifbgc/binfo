@@ -30,5 +30,15 @@ class Listing extends Model
     {
     	return $this->belongsTo('App\Models\Category');
     }
+
+    public function division()
+    {
+    	return $this->belongsTo('App\Models\Division');
+    }
+
+    public function district()
+    {
+    	return $this->belongsTo('App\Models\District');
+    }
 	
 }

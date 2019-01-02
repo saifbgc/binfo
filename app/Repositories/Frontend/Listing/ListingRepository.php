@@ -71,20 +71,75 @@ class ListingRepository extends BaseRepository
 		
 		$imagefile = ImageWorkshop::initFromPath($imagepath);
 		$framefile = ImageWorkshop::initFromPath($framepath);
+
+
+		$frameW = $framefile->getWidth();
+		$frameH = $framefile->getHeight();
+		$layerGroup = ImageWorkshop::initVirginLayer( $frameW , $frameH);
 		
-		$layerGroup = ImageWorkshop::initVirginLayer($framefile->getWidth() , $framefile->getHeight());
+		$holderOX = $frameW * (10/100);
+		$holderOY = $frameH * (10/100);
+
+		$holderW = $frameW - $holderOX;
+		$holderH = $frameH - $holderOY;
+
+		$holderArea = ImageWorkshop::initVirginLayer( $holderW , $holderH);
+
+		$imageW = $imagefile->getWidth();
+		$imageH = $imagefile->getHeight();
 		
-		$imagefile->resizeInPixel($framefile->getWidth()-40, $framefile->getHeight()-120);
+		if($imageW > $holderW || $imageH > $holderH){
+
+			
 		
+			$ratio = ($imageW / $imageH) ;
+			
+
+			$imageW = $holderW *  $ratio;
+			$imageH = $holderH / $ratio;
+			
+			if($imageW > $holderW){
+				$imageWdiff = $imageW - $holderW;
+				$imageWdiffDiv = ($imageW / $imageWdiff);
+				$imageHdiff = ($imageH / $imageWdiffDiv)/2;
+				$imageW = $imageW - ($imageWdiff + $imageWdiff * .30);
+				$imageH = $imageH - ($imageHdiff - $imageHdiff * .95);
+			}
+
+			if($imageH > $holderH){
+				$imageHdiff = $imageH - $holderH;
+				$imageHdiffDiv = ($imageH / $imageHdiff);
+				$imageWdiff = ($imageW / $imageHdiffDiv)/2;
+				$imageH = $imageH - ($imageHdiff + $imageHdiff * .50);
+				$imageW = $imageW - ($imageWdiff + $imageWdiff * .99);
+			}
+				
+		
+		}
+
+		//holder middle
+
+		$holderMiddleX = $holderW/2;
+		$holderMiddleY = $holderH/2;
+		$imageMiddleX = $imageW/2;
+		$imageMiddleY = $imageH/2;
+
+		$imagePosX = $holderMiddleX - ($imageMiddleX+$imageMiddleX * .15);
+		//$imagePosY = $holderMiddleY - $imageMiddleY;
+
+		$imagefile->resizeInPixel($imageW, $imageH);
+		
+		$holderArea->addLayer(1, $imagefile,$imagePosX, null, 'LT' );
+
 		$layerGroup->addLayer(1, $framefile);
-		$layerGroup->addLayer(2, $imagefile, 20, 80, 'LT');
+		$layerGroup->addLayer(2, $holderArea, $holderOX, $holderOY, 'LT');
 		
 		
 	    //$type = File::mimeType($framepath);
 	    $extension = File::extension($framepath);
 		$fileName = $fileName.'.'.$extension;
 		
-	    $layerGroup->save($savePath, $fileName,false,true,90);
+	    $layerGroup->save($savePath, $fileName,false,true,65);
 		return $fileName;
 	}
 	
@@ -121,7 +176,7 @@ class ListingRepository extends BaseRepository
 	    $extension = File::extension($framepath);
 		$fileName = $fileName.'.'.$extension;
 		
-	    $layerGroup->save($savePath, $fileName,false,true,90);
+	    $layerGroup->save($savePath, $fileName,false,true,100);
 		return $fileName;
 		 
 		
