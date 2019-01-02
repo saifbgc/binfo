@@ -7,7 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Listing extends Model
 {
     //
-    protected $fillable = ['name','working_hour','category_id','user_id','off_days','founded_at'];
+    protected $fillable = [
+    'name',
+    'working_hour',
+    'category_id',
+    'user_id',
+    'off_days',
+    'founded_at',
+    
+    
+    ];
+	//protected $opening_from;
+	//protected $opening_to;
 	
 	public function image()
     {
@@ -18,6 +29,16 @@ class Listing extends Model
 	public function category()
     {
     	return $this->belongsTo('App\Models\Category');
+    }
+
+    public function division()
+    {
+    	return $this->belongsTo('App\Models\Division');
+    }
+
+    public function district()
+    {
+    	return $this->belongsTo('App\Models\District');
     }
 	
 }

@@ -33,7 +33,7 @@
 								<div class="listing-title-area">
 									
 									<div class="form-group {{ $errors->has('name') ? 'alert alert-danger' :'' }}">
-							            {!! Form::label('name', 'Name') !!}
+							            {!! Form::label('name', 'Name') !!}<span>*</span>
             							{!! Form::text('name', null, ['placeholder' => 'Put Listing title here and tell the name of your business to the world','class'=>'form-control']) !!}
             							{!! $errors->first('name','<span class="help-block">:message</span>') !!}
 							        </div>
@@ -46,7 +46,7 @@
 								<div class="listing-title-area">
 									
 									<div class="form-group {{ $errors->has('category_id') ? 'alert alert-danger' :'' }}">
-							            {!! Form::label('category_id', 'Category') !!}
+							            {!! Form::label('category_id', 'Category') !!}<span>*</span>
 							            
 							            	<div class="single-query form-group">
                                             <div class="intro">
@@ -80,7 +80,7 @@
 								<div class="listing-title-area">
 									
 									<div class="form-group {{ $errors->has('founded_at') ? 'alert alert-danger' :'' }}">
-							            {!! Form::label('founded_at', 'Founded') !!}
+							            {!! Form::label('founded_at', 'Founded') !!}<span>*</span>
             							{!! Form::text('founded_at', null, ['placeholder' => 'Business Founded','class'=>'form-control']) !!}
             							{!! $errors->first('founded_at','<span class="help-block">:message</span>') !!}
 							        </div>
@@ -116,7 +116,7 @@
 								            {!! Form::label('division_id', 'Division') !!}
 								            
 								            	<div class="single-query form-group">
-	                                            <div class="divisionlist intro">
+	                                            <div class="divisionlist">
 								            {!! Form::select('division_id', $division, null, ['placeholder' => '... Select Division ...','class'=>'form-control']) !!}
 								            
 									            </div>
@@ -124,13 +124,27 @@
 							        </div>
 								</div>
 								
+								{{--
+								<div class="listing-title-area">
+									<div class="form-group">
+								            {!! Form::label('test_id', 'Test') !!}
+								            
+								            	<div class="single-query form-group">
+	                                            <div class="">
+								            {!! Form::select('test_id', [], null, ['placeholder' => '... Select Test ...','class'=>'form-control']) !!}
+								            
+									            </div>
+		                                        </div>
+							        </div>
+								</div>
+								--}}
 								
 								<div id="district_id_section" class="listing-title-area" style="display:none;">
 									<div class="form-group">
 								            {!! Form::label('district_id', 'District') !!}
 								            
 								            	<div class="single-query form-group">
-	                                            <div class="districtlist intro">
+	                                            <div class="districtlist">
 								            {!! Form::select('district_id', [], null, ['placeholder' => '... Select District ...','class'=>'form-control']) !!}
 								            
 									            </div>
@@ -145,7 +159,7 @@
 									 {!! Form::textarea ('address', null, ['placeholder' => 'Address','class'=>'form-control']) !!}
 									 </div>
 								</div>
-								
+								{{--
 								<div class="listing-title-area">
 									
 									<div class="form-group {{ $errors->has('working_hour') ? 'alert alert-danger' :'' }}">
@@ -153,6 +167,30 @@
             							{!! Form::text('working_hour', null, ['placeholder' => 'Ex: 10-12','class'=>'form-control']) !!}
 							        	{!! $errors->first('working_hour','<span class="help-block">:message</span>') !!}
 							        </div>
+									
+								</div>
+								--}}
+								<div class="listing-title-area">
+									
+									<div class="row">
+
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Opening from
+                                                </label>
+                                                {!! Form::text('opening_from', null, ['id'=>'opening_from','placeholder' => '10:00 AM','class'=>'']) !!}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Opening to
+                                                </label>
+                                                {!! Form::text('opening_to', null, ['id'=>'opening_to','placeholder' => '06:00 PM','class'=>'']) !!}
+                                            </div>
+                                        </div>
+
+                                    </div>
 									
 								</div>
 								
@@ -182,7 +220,7 @@
 						<div class="row">
 
                             <div class="col-md-12">
-                                <label>Social Media Informations <span>*</span>
+                                <label>Social Media Informations 
                                 </label>
                             </div>
 
@@ -301,8 +339,20 @@
 @push('after-scripts')
 
 <script>
-	var url = '{!! url("/districtlist") !!}';
 	
+	//test
+	/*
+	$("#test_id").zelect({
+		//initial: "one",
+		loader: function(term, page, callback) {
+			callback(['one','two']);
+		}
+		
+	});
+	
+	*/
+	var url = '{!! url("/districtlist") !!}';
+	/*
 	$('.divisionlist select').on('change', function(evt, item) { 
 		
 		$('#district_id_section').show();
@@ -314,17 +364,37 @@
 			
 			$('.districtlist select').resetZelect();
 			
+			//var optionArray = [];
+			$('#test_id').empty();
 			$.each(data, function(key, value) {
 				var option = $("<option></option>")
 	                  .attr("value", key)		                  
 	                  .text(value);
+	                  
+	            //optionArray.push({key:value});       
 
-				$('.districtlist select').append(option);
+				//$('.districtlist select').append(option);
+				//$('#district_id').append(option);
+				//$('#test_id').append(option);
+				//$('.testid select').zelectItem('', true);
+				//$('').resetZelect();
+				
+				$('#test_id').append(option);
+				
+				
 			});
+			//console.log(optionArray);
+			//$('.testid').addClass('intro'); 
+			//$(".testid select").zelect({})
+			
+			//$('#test_id').resetZelect();
+			
 		});
 		
-   });
-/*
+		
+		
+   });*/
+
 	$('#division_id').change(function(e) {
 		$('#district_id_section').show();
 		var parent = e.target.value;
@@ -339,7 +409,7 @@
 			});
 		});
 	});
-	*/
+	
 	$('#founded_at').datepicker({
             //uiLibrary: 'bootstrap4',
             showOnFocus: true, 
@@ -364,6 +434,13 @@ $('#off_days').on('tokenfield:createtoken', function (event) {
             event.preventDefault();
     });
 });
+
+$('#opening_from').timepicker({
+         format: 'hh:MM TT'
+     });
+$('#opening_to').timepicker({
+         format: 'hh:MM TT'
+     });
 	
 </script>
 

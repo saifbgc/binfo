@@ -30,9 +30,11 @@ class AddRequest extends FormRequest
         return [
             'name'           => ['required', 'string', 'max:100'],
             'category_id'    => ['required'],
-            'working_hour' =>['nullable','regex:/^([0-9]{1,2}(-)[0-9]{1,2})$/i'],
+            //'working_hour' =>['nullable','regex:/^([0-9]{1,2}(-)[0-9]{1,2})$/i'],
+            'opening_from' =>['nullable','regex:/^[0-9]{1,2}:[0-9]{1,2}[\s]{1}(AM|PM)$/i'],
+            'opening_to' =>['nullable','regex:/^[0-9]{1,2}:[0-9]{1,2}[\s]{1}(AM|PM)$/i'],
             'logo' =>['mimes:jpeg,png','max:1024'],
-            'phone' =>['nullable','regex:/^([0-9]{11,13})$/i'],
+            'phone' =>['nullable','regex:/^\d{11,13}(,\d{11,13}){0,2}$/i'],
             'website'=>['nullable','regex:/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i'],
             'founded_at'=>['required','date','date_format:Y-m-d'],
             'email' =>['nullable','email'],
